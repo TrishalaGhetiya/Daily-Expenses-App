@@ -11,9 +11,11 @@ exports.postSignUpUser = (req, res, next) => {
         password: password
     })
     .then(result => {
-        console.log('user signed up');
-        res.json(result);
+        res.json({message: 'successfully created new user'});
+        console.log('User added');
     })
-    .catch(err => console.log(err));
+    .catch(err => {
+        res.status(403).json(err);
+    });
 }
 

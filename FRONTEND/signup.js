@@ -27,6 +27,10 @@ async function createUser(e)
         try{
             const res = await axios.post('http://localhost:3000/signup', user);
             console.log(res);
+            userName.value='';
+            email.value='';
+            pass.value='';
+            confirmPass.value='';
         }
         catch(err){
             console.log(err);
