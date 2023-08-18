@@ -9,11 +9,7 @@ signUpForm.addEventListener('submit', createUser);
 async function createUser(e)
 {
     e.preventDefault();
-
-    if(userName.value==='' && email.value==='' && pass.value==='' && confirmPass===''){
-        alert('Please fill all the details');
-    }
-    else if(pass.value!=confirmPass.value){
+    if(pass.value!=confirmPass.value){
         alert('Check your Password');
         pass.value='';
         confirmPass.value='';
@@ -34,6 +30,10 @@ async function createUser(e)
         }
         catch(err){
             console.log(err);
+            userName.value='';
+            email.value='';
+            pass.value='';
+            confirmPass.value='';
         }
     }
 }
