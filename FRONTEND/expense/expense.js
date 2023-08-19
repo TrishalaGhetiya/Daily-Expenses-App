@@ -10,7 +10,8 @@ expenseList.addEventListener('click', updateExpense);
 
 window.addEventListener('DOMContentLoaded', async() => {
     try{
-        const res = await axios.get('http://localhost:3000');
+        const token = localStorage.getItem('token');
+        const res = await axios.get('http://localhost:3000', {headers: {'Authorization': token}});
         console.log(res.data);
         for(let i=0;i<res.data.length;i++)
         {
@@ -77,7 +78,8 @@ async function addExpense(e){
             category : category.value
         };
         try{
-            const res = axios.post('http://localhost:3000/add-expenses', expenses);
+            const token = localStorage.getItem('token');
+            const res = axios.post('http://localhost:3000/add-expenses', expenses, {headers: {'Authorization': token}});
             console.log('Expense added');
             amount.value='';
             description.value='';

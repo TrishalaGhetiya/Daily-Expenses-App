@@ -21,6 +21,7 @@ async function loginUser(e){
     try{
         const res = await axios.post('http://localhost:3000/login', user);
         console.log(res);
+        localStorage.setItem('token', res.data.token);
         email.value='';
         pass.value='';
         window.location.replace('../expense/expense.html');

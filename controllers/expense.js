@@ -3,7 +3,7 @@ const Expense = require('../models/expense');
 //Get expenses when page is loaded
 exports.getAddExpenses = async (req, res, next) => {
     try{
-        const expenses = await Expense.findAll();
+        const expenses = await Expense.findAll({ where: {userId: req.user.id } });
         console.log('expenses send');
         res.json(expenses);
     }
@@ -13,16 +13,18 @@ exports.getAddExpenses = async (req, res, next) => {
 }
 
 //Add expenses to the database
-exports.postAddExpenses = (req, res, next) => {
+exports.postAddExpenses = async(req, res, next) => {
+    console.log(req.user.id);
     const amount = req.body.amount;
     const description = req.body.description;
     const category = req.body.category;
-
+    const userId = req.user.id;
     try{
-        const result= Expense.create({
+        const result= await Expense.create({
             amount: amount,
             description: description,
-            category: category
+            category: category,
+            userId: userId
         })
         console.log('expense added');
         res.json(result);
