@@ -11,7 +11,9 @@ app.use(bodyParser.json());
 
 const errorController = require('./controllers/error');
 const userRoutes = require('./routes/user');
+const expenseRoutes = require('./routes/expense');
 
+app.use(expenseRoutes);
 app.use(userRoutes);
 app.use(errorController.get404);
 

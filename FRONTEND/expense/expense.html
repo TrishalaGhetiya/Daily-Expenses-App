@@ -25,16 +25,50 @@
                         <li class="nav-item" role="presentation">
                           <button class="nav-link" id="income-tab" data-bs-toggle="tab" data-bs-target="#income" type="button" role="tab" aria-controls="income" aria-selected="false">Income</button>
                         </li>
-                        <li class="nav-item" role="presentation">
-                          <button class="nav-link" id="accounts-tab" data-bs-toggle="tab" data-bs-target="#accounts" type="button" role="tab" aria-controls="accounts" aria-selected="false">Accounts</button>
-                        </li>
                       </ul>
                       <div class="tab-content" id="myTabContent">
                         <div class="tab-pane fade show active" id="expenses" role="tabpanel" aria-labelledby="expense-tab">
-                            Enter your Expenses
+                          <form action="post" class="form-control" id="expenseForm">
+                            <div class="mb-3">
+                              <label for="amount" class="form-label float-start">Amount</label>
+                              <input type="number" class="form-control" id="amount" name="amount">
+                            </div>
+                            <div class="mb-3">
+                              <label for="description" class="form-label float-start">Description</label>
+                              <input type="text" class="form-control" id="description" name="description">
+                            </div>
+                            <div class="mb-3">
+                              <label for="category" class="form-label float-start">Category</label>
+                              <select class="form-select" aria-label="Category" id="category" name="category">
+                                <option>Fun</option>
+                                <option>Food</option>
+                                <option>Hospital</option>
+                                <option>Groceries</option>
+                                <option>Travel</option>
+                                <option>Cleaning</option>
+                                <option>Clothes</option>
+                                <option>Cosmetics</option>
+                                <option>Home Decor</option>
+                                <option>Charity</option>
+                              </select>
+                              <button class="btn btn-primary float-end">Add Expense</button>
+                            </div>
+                            <div class="mb-3">
+                              
+                            </div>
+                          </form>
+                          <div class="mb-3" id="showExpense">
+                            <ul id="expenseList">
+
+                            </ul>
+                          </div>
+                          <div class="col-9 p-1 mb-3" style ="position: absolute; bottom: 0px;background-color: #a484c2;">
+                            <label class="float-start">Total Expense</label>
+                            <label class="float-end" id="totalExpense">200.00</label>
+                          </div>
+                          <div class="tab-pane fade" id="income" role="tabpanel" aria-labelledby="income-tab">Enter your income</div>
                         </div>
-                        <div class="tab-pane fade" id="income" role="tabpanel" aria-labelledby="income-tab">Enter your income</div>
-                        <div class="tab-pane fade" id="accounts" role="tabpanel" aria-labelledby="accounts-tab">Enter your bank accounts</div>
+                        
                       </div>
       
                 </div>
@@ -43,5 +77,7 @@
           </div>
         </div>
       </section>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.19.0/axios.min.js"></script>
+      <script src="expense.js"></script>
 </body>
 </html>
