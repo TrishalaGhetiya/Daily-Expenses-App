@@ -22,6 +22,9 @@ const User = sequelize.define('user', {
       },
       password: {
         type: Sequelize.TEXT
+      },
+      isPremium: {
+        type: Sequelize.BOOLEAN
       }
 });
 

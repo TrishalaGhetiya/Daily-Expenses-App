@@ -3,10 +3,13 @@ const amount = document.getElementById('amount');
 const description = document.getElementById('description');
 const category = document.getElementById('category');
 const expenseList = document.getElementById('expenseList');
+const premium = document.getElementById('premium');
+const premiumStatus = document.getElementById('premiumStatus');
 const expenseData = [];
 
 expenseForm.addEventListener('submit', addExpense);
 expenseList.addEventListener('click', updateExpense);
+premium.addEventListener('click', getPremiumMembership);
 
 window.addEventListener('DOMContentLoaded', async() => {
     try{
@@ -106,7 +109,8 @@ async function updateExpense(e){
                     if(expenseData[i].description === delExpense)
                     {
                         try{
-                            const res = await axios.delete(`http://localhost:3000/delete-expense/${expenseData[i].id}`);
+                            const token = localStorage.getItem('token');
+                            const res = await axios.delete(`http://localhost:3000/delete-expense/${expenseData[i].id}`, {headers: {'Authorization': token}});
                             console.log(res);
                         }
                         catch(err){
@@ -130,7 +134,8 @@ async function updateExpense(e){
                     amount.value=expenseData[i].amount;
                     category.value = expenseData[i].category;
                     try{
-                        const result = axios.delete(`http://localhost:3000/delete-expense/${expenseData[i].id}`);
+                        const token = localStorage.getItem('token');
+                        const result = axios.delete(`http://localhost:3000/delete-expense/${expenseData[i].id}`, {headers: {'Authorization': token}});
                         console.log(result);
                     }
                     catch(err){
@@ -141,5 +146,38 @@ async function updateExpense(e){
             }
             expenseList.removeChild(li1);   
         }
+}
+
+async function getPremiumMembership(e){
+    e.preventDefault();
+    const token = localStorage.getItem('token');
+    try{
+        const res = await axios.get('http://localhost:3000/getPremiumMembership', {headers: {'Authorization': token}});
+        var options = {
+            "key": res.data.key_id,
+            "order_id": res.data.order.id,
+            "handler": async function (res) {
+                await axios.post('http://localhost:3000/updateTransactionStatus', {
+                    order_id: options.order_id,
+                    payment_id: res.razorpay_payment_id
+                }, {headers: {'Authorization': token}})
+
+                alert('Enjoy your premium membership');
+                premium.remove();
+                premiumStatus.innerHTML = 'You are a Premium member now.';
+            }
+        };
+        const rzp1 = new Razorpay(options);
+        rzp1.open();
+        e.preventDefault();
+
+        rzp1.on('payment.failed', function (response) {
+            console.log(response);
+            alert('something went wrong');
+        })
+    }
+    catch(err){
+        console.log(err);
+    }
 }
 

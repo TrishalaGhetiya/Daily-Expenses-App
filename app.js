@@ -5,6 +5,7 @@ const sequelize = require('./util/database');
 
 const User = require('./models/user');
 const Expense = require('./models/expense');
+const Order = require('./models/order');
 
 const app = express();
 
@@ -16,13 +17,18 @@ app.use(bodyParser.json());
 const errorController = require('./controllers/error');
 const userRoutes = require('./routes/user');
 const expenseRoutes = require('./routes/expense');
+const purchaseRoutes = require('./routes/purchase');
 
 app.use(expenseRoutes);
 app.use(userRoutes);
+app.use(purchaseRoutes);
 app.use(errorController.get404);
 
 Expense.belongsTo(User, {constraints: true, onDelete: 'CASCADE'});
 User.hasMany(Expense);
+
+User.hasMany(Order);
+Order.belongsTo(User);
 
 
 sequelize

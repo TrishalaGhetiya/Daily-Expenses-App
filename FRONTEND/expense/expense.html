@@ -10,6 +10,9 @@
 <body>
     <section class="vh-100" style="background-color: #733aa8;">
         <div class="container py-5 h-100">
+          <div id="premiumStatus"></div>
+          <button id="premium" class="btn-primary">Buy Premium</button>
+          <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
               <div class="card shadow-2-strong" style="border-radius: 1rem;">
@@ -51,10 +54,9 @@
                                 <option>Home Decor</option>
                                 <option>Charity</option>
                               </select>
-                              <button class="btn btn-primary float-end">Add Expense</button>
                             </div>
                             <div class="mb-3">
-                              
+                              <button class="btn btn-primary">Add Expense</button>
                             </div>
                           </form>
                           <div class="mb-3" id="showExpense">

@@ -34,23 +34,6 @@ exports.postAddExpenses = async(req, res, next) => {
     }
 }
 
-//Update items from remaining to done
-exports.editExpense = async (req, res, next) => {
-    try{
-        const expenseId = req.params.id;
-        const expense = await Expense.findByPk(expenseId);
-        expense.amount = req.body.amount;
-        expense.description = req.body.description;
-        expense.category = req.body.category;
-        expense.save();
-        console.log('expense edited');
-        res.json(expense);
-    }
-    catch(err){
-        console.log(err);
-    }
-}
-
 //delete expense
 exports.deleteExpense = async (req, res, next) => {
     try{
