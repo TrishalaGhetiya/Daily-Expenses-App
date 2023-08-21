@@ -19,6 +19,6 @@ function showLeaderBoardOnScreen(data){
     const li = document.createElement('li');
     li.appendChild(document.createTextNode(`${data.firstName}`));
     li.appendChild(document.createTextNode(' - '));
-    li.appendChild(document.createTextNode(`${data.total_amount}`));
+    li.appendChild(document.createTextNode(`${data.total_Expense}`));
     leaderBoard.appendChild(li);
 }

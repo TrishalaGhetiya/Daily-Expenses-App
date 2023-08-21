@@ -23,6 +23,9 @@ const User = sequelize.define('user', {
       password: {
         type: Sequelize.TEXT
       },
+      total_Expense: {
+        type: Sequelize.FLOAT
+      },
       isPremium: {
         type: Sequelize.BOOLEAN
       }

@@ -22,7 +22,8 @@ exports.postSignUpUser = async (req, res, next) => {
                     lastName: lastName,
                     email: email,
                     password: hash,
-                    isPremium: false
+                    isPremium: false,
+                    total_Expense: 0
                 })
                 console.log('User added');
                 return res.json({message: 'successfully created new user'});
