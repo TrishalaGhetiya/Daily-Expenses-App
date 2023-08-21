@@ -18,7 +18,9 @@ const errorController = require('./controllers/error');
 const userRoutes = require('./routes/user');
 const expenseRoutes = require('./routes/expense');
 const purchaseRoutes = require('./routes/purchase');
+const premiumRoutes = require('./routes/premium');
 
+app.use(premiumRoutes);
 app.use(expenseRoutes);
 app.use(userRoutes);
 app.use(purchaseRoutes);

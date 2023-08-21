@@ -5,15 +5,43 @@ const category = document.getElementById('category');
 const expenseList = document.getElementById('expenseList');
 const premium = document.getElementById('premium');
 const premiumStatus = document.getElementById('premiumStatus');
+const leaderBoard = document.getElementById('leaderBoard');
 const expenseData = [];
 
 expenseForm.addEventListener('submit', addExpense);
 expenseList.addEventListener('click', updateExpense);
 premium.addEventListener('click', getPremiumMembership);
+leaderBoard.addEventListener('click', showLeaderBoard);
+
+function showLeaderBoard(e){
+    e.preventDefault();
+    window.location.replace('../premium/premium.html');
+}
+
+function parseJwt (token) {
+    var base64Url = token.split('.')[1];
+    var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    var jsonPayload = decodeURIComponent(window.atob(base64).split('').map(function(c) {
+        return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join(''));
+
+    return JSON.parse(jsonPayload);
+}
+
+function showPremiumMessage(){
+    premium.style.visibility="hidden";
+    premiumStatus.innerHTML = 'You are a Premium member now.';
+    leaderBoard.style.visibility = "true";
+}
 
 window.addEventListener('DOMContentLoaded', async() => {
     try{
         const token = localStorage.getItem('token');
+        const decodedToken = parseJwt(token);
+        console.log(decodedToken);
+        if(decodedToken.isPremium === true){
+            showPremiumMessage();
+        }
         const res = await axios.get('http://localhost:3000', {headers: {'Authorization': token}});
         console.log(res.data);
         for(let i=0;i<res.data.length;i++)
@@ -163,8 +191,7 @@ async function getPremiumMembership(e){
                 }, {headers: {'Authorization': token}})
 
                 alert('Enjoy your premium membership');
-                premium.remove();
-                premiumStatus.innerHTML = 'You are a Premium member now.';
+                showPremiumMessage();
             }
         };
         const rzp1 = new Razorpay(options);

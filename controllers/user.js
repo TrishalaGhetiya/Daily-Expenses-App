@@ -2,8 +2,8 @@ const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 
-function generateToken(id){
-    return jwt.sign({userId: id}, 'Trishala');
+function generateToken(id, isPremium){
+    return jwt.sign({userId: id, isPremium: isPremium}, 'Trishala');
 }
 
 exports.postSignUpUser = async (req, res, next) => {
@@ -21,7 +21,8 @@ exports.postSignUpUser = async (req, res, next) => {
                     firstName: firstName,
                     lastName: lastName,
                     email: email,
-                    password: hash
+                    password: hash,
+                    isPremium: false
                 })
                 console.log('User added');
                 return res.json({message: 'successfully created new user'});
@@ -43,7 +44,7 @@ exports.postLoginUser = async (req, res, next) => {
                     throw new err;
                 }
                 if(result === true){
-                   res.json({message: 'User logged in successfully', token: generateToken(user.id)});
+                   res.json({message: 'User logged in successfully', token: generateToken(user.id, user.isPremium)});
                 }
                 else{
                     res.status(401).json({ error: "password doesn't match" });

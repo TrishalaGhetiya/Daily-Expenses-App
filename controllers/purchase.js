@@ -41,10 +41,12 @@ exports.updateTransactionStatus = async(req, res) => {
                                 return res.status(202).json({success: true, message: 'transaction successful'})
                             })
                             .catch(err => {
+                                console.log('isPremium not updated');
                                 throw new Error(err);
                             })
                     })
                     .catch(err => {
+                        console.log('payment id and status not updated');
                         throw new Error(err);
                     })
             })
