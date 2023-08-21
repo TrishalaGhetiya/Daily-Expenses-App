@@ -17,7 +17,7 @@ window.addEventListener('DOMContentLoaded', async () => {
 
 function showLeaderBoardOnScreen(data){
     const li = document.createElement('li');
-    li.appendChild(document.createTextNode(`${data.name}`));
+    li.appendChild(document.createTextNode(`${data.firstName}`));
     li.appendChild(document.createTextNode(' - '));
     li.appendChild(document.createTextNode(`${data.total_amount}`));
     leaderBoard.appendChild(li);
