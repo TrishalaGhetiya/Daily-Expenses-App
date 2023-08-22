@@ -44,7 +44,7 @@ window.addEventListener('DOMContentLoaded', async() => {
             showPremiumMessage();
         }
         const res = await axios.get('http://localhost:3000', {headers: {'Authorization': token}});
-        console.log(res.data);
+        console.log(res.data[0].user.total_Expense);
         for(let i=0;i<res.data.length;i++)
         {
             showNewExpenseOnScreen(res.data[i]);
@@ -73,6 +73,8 @@ function showNewExpenseOnScreen(data){
     li.appendChild(document.createTextNode(`${data.category}`));
     li.appendChild(deleteBtn);
     li.appendChild(editButton);
+
+    totalExpense.innerHTML=`${data.user.total_Expense}`;
 
     expenseList.appendChild(li);
 }

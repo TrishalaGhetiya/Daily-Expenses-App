@@ -5,7 +5,28 @@ const sequelize = require('../util/database');
 //Get expenses when page is loaded
 exports.getAddExpenses = async (req, res, next) => {
     try{
-        const expenses = await Expense.findAll({ where: {userId: req.user.id } });
+        // const leaderBoardDetails = await User.findAll({
+        //     attributes: ['id', 'firstName', [sequelize.fn('sum', sequelize.col('expenses.amount')), 'total_amount']],
+        //     include: [{
+        //         model: Expense,
+        //         attributes: []
+        //     }],
+        //     group: ['user.id'],
+        //     order: [['total_amount', 'DESC']]
+        // })
+        // const expenses = await Expense.findAll({ 
+        //     where: {userId: req.user.id }
+        // });
+        // console.log('expenses send');
+        // res.json(expenses);
+        const expenses = await Expense.findAll({ 
+            where: {userId: req.user.id },
+            attributes: ['amount', 'description', 'category'],
+            include: [{
+                model: User,
+                attributes: ['total_Expense']
+            }]
+        });
         console.log('expenses send');
         res.json(expenses);
     }
@@ -34,7 +55,7 @@ exports.postAddExpenses = async (req, res, next) => {
         const result = await req.user.update({
             total_Expense: updatedAmount
         }, { transaction: t })
-        
+
         await t.commit();
         console.log('expense added');
         res.json(result);
