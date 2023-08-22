@@ -7,12 +7,19 @@ const premium = document.getElementById('premium');
 const premiumStatus = document.getElementById('premiumStatus');
 const leaderBoard = document.getElementById('leaderBoard');
 const totalExpense = document.getElementById('totalExpense');
+const logout = document.getElementById('logout');
 const expenseData = [];
 
 expenseForm.addEventListener('submit', addExpense);
 expenseList.addEventListener('click', updateExpense);
 premium.addEventListener('click', getPremiumMembership);
 leaderBoard.addEventListener('click', showLeaderBoard);
+logout.addEventListener('click', userLogout);
+
+function userLogout(e){
+    e.preventDefault();
+    window.location.replace('../login/login.html');
+}
 
 function showLeaderBoard(e){
     e.preventDefault();
@@ -114,6 +121,7 @@ async function addExpense(e){
         try{
             const token = localStorage.getItem('token');
             const res = axios.post('http://localhost:3000/add-expenses', expenses, {headers: {'Authorization': token}});
+            location.reload();
             console.log('Expense added');
 
             amount.value='';
