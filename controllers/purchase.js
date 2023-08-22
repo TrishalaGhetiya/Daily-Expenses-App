@@ -9,19 +9,10 @@ exports.purchasePremium = async (req, res, next) => {
             key_secret: process.env.RAZORPAY_KEY_SECRET
         })
         const amount = 2500;
-        rzp.orders.create({amount, "currency": "INR"}, (err, order) => {
-            if(err){
-                throw new Error(JSON.stringify(err));
-            }
-            req.user.createOrder({orderid: order.id, status: 'Pending'})
-            .then(() => {
-                console.log('done good');
-                return res.status(201).json({order, key_id : rzp.key_id});
-            })
-            .catch(err => {
-                throw new Error(err);
-            })
-        })
+        const rzpOrder = await rzp.orders.create({amount, "currency": "INR"})
+        const userOrder = await req.user.createOrder({orderid: rzpOrder.id, status: 'Pending'})
+        console.log('done good');
+        return res.status(201).json({rzpOrder, key_id : rzp.key_id});
     }
     catch(err){
         console.log(err);
@@ -32,27 +23,10 @@ exports.purchasePremium = async (req, res, next) => {
 exports.updateTransactionStatus = async(req, res) => {
     try{
         const {payment_id, order_id} = req.body;
-        Order.findOne({ where: {orderid: order_id}})
-            .then(order => {
-                order.update({paymentid: payment_id, status: 'successful'})
-                    .then(() => {
-                        req.user.update({isPremium: true})
-                            .then(() => {
-                                return res.status(202).json({success: true, message: 'transaction successful'})
-                            })
-                            .catch(err => {
-                                console.log('isPremium not updated');
-                                throw new Error(err);
-                            })
-                    })
-                    .catch(err => {
-                        console.log('payment id and status not updated');
-                        throw new Error(err);
-                    })
-            })
-            .catch(err => {
-                throw new Error(err);
-            })
+        const order = await Order.findOne({ where: {orderid: order_id}});
+        const result = await order.update({paymentid: payment_id, status: 'successful'});
+        const result1 = await req.user.update({isPremium: true});
+        return res.status(202).json({success: true, message: 'transaction successful'})
     }
     catch(err){
         console.log(err);

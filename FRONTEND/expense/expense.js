@@ -6,6 +6,7 @@ const expenseList = document.getElementById('expenseList');
 const premium = document.getElementById('premium');
 const premiumStatus = document.getElementById('premiumStatus');
 const leaderBoard = document.getElementById('leaderBoard');
+const totalExpense = document.getElementById('totalExpense');
 const expenseData = [];
 
 expenseForm.addEventListener('submit', addExpense);
@@ -31,7 +32,7 @@ function parseJwt (token) {
 function showPremiumMessage(){
     premium.style.visibility="hidden";
     premiumStatus.innerHTML = 'You are a Premium member now.';
-    leaderBoard.style.visibility = "true";
+    leaderBoard.style.visibility = "visible";
 }
 
 window.addEventListener('DOMContentLoaded', async() => {
@@ -112,6 +113,7 @@ async function addExpense(e){
             const token = localStorage.getItem('token');
             const res = axios.post('http://localhost:3000/add-expenses', expenses, {headers: {'Authorization': token}});
             console.log('Expense added');
+
             amount.value='';
             description.value='';
             category.value='';
@@ -138,7 +140,7 @@ async function updateExpense(e){
                     {
                         try{
                             const token = localStorage.getItem('token');
-                            const res = await axios.delete(`http://localhost:3000/delete-expense/${expenseData[i].id}`, {headers: {'Authorization': token}});
+                            const res = await axios.delete(`http://localhost:3000/delete-expense/${expenseData[i].id}`, {headers: {'Authorization': token}, data: {'amount': expenseData[i].amount}});
                             console.log(res);
                         }
                         catch(err){
@@ -181,9 +183,10 @@ async function getPremiumMembership(e){
     const token = localStorage.getItem('token');
     try{
         const res = await axios.get('http://localhost:3000/getPremiumMembership', {headers: {'Authorization': token}});
+        //console.log(res.data);
         var options = {
             "key": res.data.key_id,
-            "order_id": res.data.order.id,
+            "order_id": res.data.rzpOrder.id,
             "handler": async function (res) {
                 await axios.post('http://localhost:3000/updateTransactionStatus', {
                     order_id: options.order_id,

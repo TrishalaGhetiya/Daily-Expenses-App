@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../util/database');
 
-//Create Table named todoList in database
+//Create Table named user in database
 const User = sequelize.define('user', {
     id: {
         type: Sequelize.INTEGER,
