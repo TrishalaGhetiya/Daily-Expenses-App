@@ -19,11 +19,13 @@ const userRoutes = require('./routes/user');
 const expenseRoutes = require('./routes/expense');
 const purchaseRoutes = require('./routes/purchase');
 const premiumRoutes = require('./routes/premium');
+const passwordRoutes = require('./routes/password');
 
 app.use(premiumRoutes);
 app.use(expenseRoutes);
 app.use(userRoutes);
 app.use(purchaseRoutes);
+app.use(passwordRoutes);
 app.use(errorController.get404);
 
 Expense.belongsTo(User, {constraints: true, onDelete: 'CASCADE'});

@@ -2,10 +2,16 @@ const loginForm = document.getElementById('loginForm');
 const email = document.getElementById('email');
 const pass = document.getElementById('pass');
 const register = document.getElementById('register');
+const forgotPassword = document.getElementById('forgotPassword');
 
 loginForm.addEventListener('submit', loginUser);
-
+forgotPassword.addEventListener('click', getForgotPasswordPage);
 register.addEventListener('click', signupUser);
+
+function getForgotPasswordPage(e){
+    e.preventDefault();
+    window.location.replace('../forgotPassword/forgotPassword.html');
+}
 
 function signupUser(e){
     e.preventDefault();
