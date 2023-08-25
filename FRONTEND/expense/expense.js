@@ -8,6 +8,7 @@ const premiumStatus = document.getElementById('premiumStatus');
 const leaderBoard = document.getElementById('leaderBoard');
 const totalExpense = document.getElementById('totalExpense');
 const logout = document.getElementById('logout');
+const report = document.getElementById('report');
 const expenseData = [];
 
 expenseForm.addEventListener('submit', addExpense);
@@ -15,6 +16,12 @@ expenseList.addEventListener('click', updateExpense);
 premium.addEventListener('click', getPremiumMembership);
 leaderBoard.addEventListener('click', showLeaderBoard);
 logout.addEventListener('click', userLogout);
+report.addEventListener('click', showReport);
+
+function showReport(e){
+    e.preventDefault();
+    location.replace('../Report/report.html');
+}
 
 function userLogout(e){
     e.preventDefault();
@@ -40,6 +47,8 @@ function showPremiumMessage(){
     premium.style.visibility="hidden";
     premiumStatus.innerHTML = 'You are a Premium member now.';
     leaderBoard.style.visibility = "visible";
+    report.style.visibility = "visible";
+
 }
 
 window.addEventListener('DOMContentLoaded', async() => {

@@ -13,6 +13,7 @@
           <div id="premiumStatus"></div>
           <button id="premium" class="btn-primary">Buy Premium</button>
           <button id="leaderBoard" class="btn-primary" style="visibility: hidden;">Show LeaderBoard</button>
+          <button id="report" class="btn-primary" style="visibility: hidden;">Show Report</button>
           <button id="logout">Log Out</button>
           <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
           <div class="row d-flex justify-content-center align-items-center h-100">
@@ -70,9 +71,37 @@
                             <label class="float-start">Total Expense</label>
                             <label class="float-end" id="totalExpense"></label>
                           </div>
-                          <div class="tab-pane fade" id="income" role="tabpanel" aria-labelledby="income-tab">Enter your income</div>
+                          
                         </div>
-                        
+                        <div class="tab-pane fade" id="income" role="tabpanel" aria-labelledby="income-tab">
+                          <form action="post" class="form-control" id="incomeForm">
+                            <div class="mb-3">
+                              <label for="incomeAmount" class="form-label float-start">Amount</label>
+                              <input type="number" class="form-control" id="incomeAmount" name="incomeAmount">
+                            </div>
+                            <div class="mb-3">
+                              <label for="incomeDescription" class="form-label float-start">Description</label>
+                              <input type="text" class="form-control" id="incomeDescription" name="incomeDescription">
+                            </div>
+                            <div class="mb-3">
+                              <label for="incomeCategory" class="form-label float-start">Category</label>
+                              <select class="form-select" aria-label="Category" id="incomeCategory" name="incomeCategory">
+                                <option>Salary</option>
+                                <option>Rent</option>
+                              </select>
+                            </div>
+                            <div class="mb-3">
+                              <button class="btn btn-primary">Add Income</button>
+                            </div>
+                          </form>
+                          <div class="mb-3" id="showIncome">
+                            <ol type="1" id="incomeList"></ol>
+                          </div>
+                          <div class="col-9 p-1 mb-3" style ="position: absolute; bottom: 0px;background-color: #a484c2;">
+                            <label class="float-start">Total Income</label>
+                            <label class="float-end" id="totalIncome"></label>
+                          </div>
+                        </div>
                       </div>
       
                 </div>

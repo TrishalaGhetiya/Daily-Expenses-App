@@ -1,4 +1,7 @@
 const leaderBoard = document.getElementById('leaderBoard');
+const backToMyPage = document.getElementById('backToMyPage');
+
+backToMyPage.addEventListener('click', gotToMyPage);
 
 window.addEventListener('DOMContentLoaded', async () => {
     try{
@@ -21,4 +24,9 @@ function showLeaderBoardOnScreen(data){
     li.appendChild(document.createTextNode(' - '));
     li.appendChild(document.createTextNode(`${data.total_Expense}`));
     leaderBoard.appendChild(li);
+}
+
+function gotToMyPage(e){
+    e.preventDefault();
+    location.replace('../expense/expense.html');
 }
