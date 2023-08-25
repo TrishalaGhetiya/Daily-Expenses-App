@@ -53,7 +53,7 @@ exports.forgotPassword = async (req, res, next) => {
 exports.resetPassword = async (req, res, next) => {
     try{
         console.log('entered reset password link');
-        const activeLink = await FPR.findOne({ where: {id: req.params.forgotPasswordId}});
+        const activeLink = await FPR.findOne({ where: {id: req.params.forgotPasswordId, isActive: true}});
         if(activeLink){
             const result = await activeLink.update({isActive: false});
             //console.log('entered reset password link');

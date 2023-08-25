@@ -51,7 +51,7 @@ window.addEventListener('DOMContentLoaded', async() => {
             showPremiumMessage();
         }
         const res = await axios.get('http://localhost:3000', {headers: {'Authorization': token}});
-        console.log(res.data[0].user.total_Expense);
+        //console.log(res.data[0].user.total_Expense);
         for(let i=0;i<res.data.length;i++)
         {
             showNewExpenseOnScreen(res.data[i]);
@@ -149,9 +149,16 @@ async function updateExpense(e){
                     if(expenseData[i].description === delExpense)
                     {
                         try{
+                            //console.log(expenseData[i].id);
                             const token = localStorage.getItem('token');
-                            const res = await axios.delete(`http://localhost:3000/delete-expense/${expenseData[i].id}`, {headers: {'Authorization': token}, data: {'amount': expenseData[i].amount}});
-                            console.log(res);
+                            const res = await axios.delete(`http://localhost:3000/delete-expense/${expenseData[i].id}`,
+                            {headers: {'Authorization': token}, 
+                            data: {
+                                'amount': expenseData[i].amount, 
+                                'total_Expense' : expenseData[i].user.total_Expense
+                            }
+                        });
+                        console.log(res);
                         }
                         catch(err){
                             console.log(err);
@@ -160,6 +167,7 @@ async function updateExpense(e){
                     }        
                 }
                 expenseList.removeChild(li);
+                location.reload();
             }
         }
         if(e.target.classList.contains('edit'))

@@ -21,7 +21,7 @@ exports.getAddExpenses = async (req, res, next) => {
         // res.json(expenses);
         const expenses = await Expense.findAll({ 
             where: {userId: req.user.id },
-            attributes: ['amount', 'description', 'category'],
+            attributes: ['id', 'amount', 'description', 'category'],
             include: [{
                 model: User,
                 attributes: ['total_Expense']
@@ -68,20 +68,24 @@ exports.postAddExpenses = async (req, res, next) => {
 
 //delete expense
 exports.deleteExpense = async (req, res, next) => {
+    const t = await sequelize.transaction();
     try{
-        //const deleteAmount = req.body('amount');
-        //console.log(deleteAmount);
-        const t = sequelize.transaction();
         const expenseId = req.params.id;
-        //const updatedAmount = req.user.total_Expense + +amount;
+        const updatedAmount = req.user.total_Expense - req.body.amount;
 
         const expense = await Expense.findByPk(expenseId);
-        expense.destroy({ transaction: t });
+       
+        const updatedUser = await User.update({total_Expense: updatedAmount}, { where: {id: expense.userId}}, {transaction: t})
+
+        const deletedExpense = await expense.destroy({ transaction: t });
+
+        await t.commit();
 
         console.log('expense deleted');
-        res.json(expense);
+        res.status(200).json({message: 'expense deleted successfully'});
     }
     catch(err){
+        await t.rollback();
         console.log(err);
     }
 }
