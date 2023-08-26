@@ -1,3 +1,4 @@
+const limit = 2;
 const expenseForm = document.getElementById('expenseForm');
 const amount = document.getElementById('amount');
 const description = document.getElementById('description');
@@ -9,6 +10,7 @@ const leaderBoard = document.getElementById('leaderBoard');
 const totalExpense = document.getElementById('totalExpense');
 const logout = document.getElementById('logout');
 const report = document.getElementById('report');
+const pagination = document.getElementById('pagination');
 const expenseData = [];
 
 expenseForm.addEventListener('submit', addExpense);
@@ -70,22 +72,52 @@ window.addEventListener('DOMContentLoaded', async() => {
     try{
         const token = localStorage.getItem('token');
         const decodedToken = parseJwt(token);
-        console.log(decodedToken);
         if(decodedToken.isPremium === true){
             showPremiumMessage();
         }
-        const res = await axios.get('http://localhost:3000', {headers: {'Authorization': token}});
-        //console.log(res.data[0].user.total_Expense);
-        for(let i=0;i<res.data.length;i++)
+        var page = 1;
+        const res = await axios.get(`http://localhost:3000/get-expenses/?page=${page}&limit=${limit}`, {headers: {'Authorization': token}});
+        showPagination(res.data.count);
+        //console.log(res.data.rows);
+        for(let i=0;i<res.data.rows.length;i++)
         {
-            showNewExpenseOnScreen(res.data[i]);
-            expenseData.push(res.data[i]);
+            showNewExpenseOnScreen(res.data.rows[i]);
+            expenseData.push(res.data.rows[i]);
         }
     }
     catch(err){
         console.log(err);
     }
 })
+
+function showPagination(pages){
+    const numberOfButtons = Math.ceil(pages/limit);
+    for(let i=1;i<=numberOfButtons;i++){
+        const btn = document.createElement('button');
+        btn.innerHTML = i;
+        btn.className = `btn${i}`;
+        btn.addEventListener('click', () => getExpenses(i));
+        pagination.appendChild(btn);
+        //console.log(btn.className);
+    }
+    //console.log(numberOfButtons);
+}
+
+async function getExpenses(currentPage){
+    try{
+        const token = localStorage.getItem('token');
+        const res = await axios.get(`http://localhost:3000/get-expenses/?page=${currentPage}&limit=${limit}`, {headers: {'Authorization': token}});
+        console.log(res);
+        for(let i=0;i<res.data.rows.length;i++)
+        {
+            showNewExpenseOnScreen(res.data.rows[i]);
+            expenseData.push(res.data.rows[i]);
+        }
+    }
+    catch(err){
+        console.log(err);
+    }
+}
 
 function showNewExpenseOnScreen(data){
     const deleteBtn = document.createElement('button');
@@ -97,6 +129,7 @@ function showNewExpenseOnScreen(data){
     editButton.appendChild(document.createTextNode('Edit'));
 
     const li = document.createElement('li');
+    li.className = 'name';
     li.appendChild(document.createTextNode(`${data.description}`));
     li.appendChild(document.createTextNode(' - '));
     li.appendChild(document.createTextNode(`${data.amount}`));

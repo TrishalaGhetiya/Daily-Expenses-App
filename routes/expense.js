@@ -5,7 +5,7 @@ const userAuthentication = require('../middlewares/authenticate');
 const expenseController = require('../controllers/expense');
 
 //Loading Page
-router.get('/', userAuthentication.authenticate ,expenseController.getAddExpenses);
+router.get('/get-expenses', userAuthentication.authenticate ,expenseController.getAddedExpenses);
 
 //Add Expenses
 router.post('/add-expenses', userAuthentication.authenticate, expenseController.postAddExpenses);

@@ -5,32 +5,25 @@ const AWS = require('aws-sdk');
 require('dotenv').config();
 
 //Get expenses when page is loaded
-exports.getAddExpenses = async (req, res, next) => {
+exports.getAddedExpenses = async (req, res, next) => {
     try{
-        // const leaderBoardDetails = await User.findAll({
-        //     attributes: ['id', 'firstName', [sequelize.fn('sum', sequelize.col('expenses.amount')), 'total_amount']],
-        //     include: [{
-        //         model: Expense,
-        //         attributes: []
-        //     }],
-        //     group: ['user.id'],
-        //     order: [['total_amount', 'DESC']]
-        // })
-        // const expenses = await Expense.findAll({ 
-        //     where: {userId: req.user.id }
-        // });
-        // console.log('expenses send');
-        // res.json(expenses);
-        const expenses = await Expense.findAll({ 
+        const pageNumber = +req.query.page || 1;
+        const limit = +req.query.limit;
+
+        const {count, rows} = await Expense.findAndCountAll({ 
             where: {userId: req.user.id },
             attributes: ['id', 'amount', 'description', 'category'],
             include: [{
                 model: User,
                 attributes: ['total_Expense']
-            }]
+            }],
+            offset: (pageNumber - 1) * limit,
+            limit: limit
         });
+        console.log(count);
+        console.log(rows);
         console.log('expenses send');
-        res.json(expenses);
+        res.status(200).json({rows, count});
     }
     catch(err){
         console.log(err);
@@ -92,6 +85,7 @@ exports.deleteExpense = async (req, res, next) => {
     }
 }
 
+//download expenses
 exports.downloadExpenses = async (req, res, next) => {
     try{
         const expenses = await req.user.getExpenses();
@@ -106,6 +100,7 @@ exports.downloadExpenses = async (req, res, next) => {
     }
 }
 
+//upload expense file to amazon s3
 async function uploadToS3(data, filename){
     try{
         let s3bucket = new AWS.S3({
