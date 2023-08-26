@@ -173,7 +173,6 @@ async function updateExpense(e){
                     if(expenseData[i].description === delExpense)
                     {
                         try{
-                            //console.log(expenseData[i].id);
                             const token = localStorage.getItem('token');
                             const res = await axios.delete(`http://localhost:3000/delete-expense/${expenseData[i].id}`,
                             {headers: {'Authorization': token}, 
