@@ -1,6 +1,8 @@
 const Expense = require('../models/expense');
 const User = require('../models/user');
 const sequelize = require('../util/database');
+const AWS = require('aws-sdk');
+require('dotenv').config();
 
 //Get expenses when page is loaded
 exports.getAddExpenses = async (req, res, next) => {
@@ -86,6 +88,54 @@ exports.deleteExpense = async (req, res, next) => {
     }
     catch(err){
         await t.rollback();
+        console.log(err);
+    }
+}
+
+exports.downloadExpenses = async (req, res, next) => {
+    try{
+        const expenses = await req.user.getExpenses();
+        const stringifiedExpenses = JSON.stringify(expenses);
+        const filename = `Expense${req.user.id}/${new Date()}.txt`;
+        const fileURL = await uploadToS3(stringifiedExpenses, filename);
+        console.log(fileURL);
+        res.status(200).json({fileURL, success: true});
+    }
+    catch(err){
+        console.log(err);
+    }
+}
+
+async function uploadToS3(data, filename){
+    try{
+        let s3bucket = new AWS.S3({
+            accessKeyId: process.env.IAM_USER_KEY,
+            secretAccessKey: process.env.IAM_USER_SECRET
+        })
+
+        var params = {
+            Bucket: process.env.BUCKET_NAME,
+            Key: filename,
+            Body: data,
+            ACL: 'public-read'
+        }
+
+        return new Promise((resolve, reject) => {
+            s3bucket.upload(params, (err, resdata) => {
+                if(err){
+                    console.log(err);
+                    reject(err);
+                }
+                else{
+                    console.log('success');
+                    resolve(resdata.Location);
+                }
+            });
+        })
+        
+        
+    }
+    catch(err){
         console.log(err);
     }
 }

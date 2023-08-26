@@ -16,11 +16,26 @@ expenseList.addEventListener('click', updateExpense);
 premium.addEventListener('click', getPremiumMembership);
 leaderBoard.addEventListener('click', showLeaderBoard);
 logout.addEventListener('click', userLogout);
-report.addEventListener('click', showReport);
+report.addEventListener('click', download);
 
-function showReport(e){
+async function download(e){
     e.preventDefault();
-    location.replace('../Report/report.html');
+    try{
+        const token = localStorage.getItem('token');
+        const res = await axios.get('http://localhost:3000/download', {headers: {'Authorization': token}})
+        console.log(res);
+        if(res.status === 200){
+            var a = document.createElement('a');
+            a.href = res.data.fileURL;
+            a.download = 'myexpense.csv';
+            a.click();
+            alert('your file has downloaded!'); 
+        }
+    }
+    catch(err){
+        console.log(err);
+    }
+    //location.replace('../Report/report.html');
 }
 
 function userLogout(e){

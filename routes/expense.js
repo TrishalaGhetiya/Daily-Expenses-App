@@ -13,4 +13,7 @@ router.post('/add-expenses', userAuthentication.authenticate, expenseController.
 //Delete Expense
 router.delete('/delete-expense/:id', userAuthentication.authenticate, expenseController.deleteExpense);
 
+//download file of expenses
+router.get('/download', userAuthentication.authenticate, expenseController.downloadExpenses);
+
 module.exports = router;
