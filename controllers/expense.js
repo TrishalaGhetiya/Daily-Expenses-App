@@ -20,10 +20,8 @@ exports.getAddedExpenses = async (req, res, next) => {
             offset: (pageNumber - 1) * limit,
             limit: limit
         });
-        console.log(count);
-        console.log(rows);
         console.log('expenses send');
-        res.status(200).json({rows, count});
+        res.status(200).json({count, rows});
     }
     catch(err){
         console.log(err);
