@@ -1,11 +1,14 @@
 const User = require('../models/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+require('dotenv').config();
 
+//Generate encrypted token to send to frontend
 function generateToken(id, isPremium){
-    return jwt.sign({userId: id, isPremium: isPremium}, 'Trishala');
+    return jwt.sign({userId: id, isPremium: isPremium}, process.env.JWT_SECRET_KEY);
 }
 
+//Sign up user
 exports.postSignUpUser = async (req, res, next) => {
     const firstName = req.body.firstName;
     const lastName = req.body.lastName;
@@ -14,7 +17,7 @@ exports.postSignUpUser = async (req, res, next) => {
     try{
         bcrypt.hash(password, 5, async (err, hash) => {
             if(err){
-                throw new err;
+                throw new Error(err);
             }
             else{
                 await User.create({
@@ -26,16 +29,18 @@ exports.postSignUpUser = async (req, res, next) => {
                     total_Expense: 0
                 })
                 console.log('User added');
-                return res.json({message: 'successfully created new user'});
+                return res.status(200).json({message: 'successfully created new user'});
                 
             }
         }) 
     }
     catch(err){
-       return res.status(403).json({message: 'Something went wrong'});
+        console.log(err);
+        return res.status(403).json({message: 'Something went wrong'});
     }
 }
 
+//Login User
 exports.postLoginUser = async (req, res, next) => {
     try{
         const user = await User.findOne({ where: { email: req.body.email } });
@@ -58,7 +63,7 @@ exports.postLoginUser = async (req, res, next) => {
     }
     catch(err){
         console.log(err);
-        res.json(err);
+        res.status(500).json(err);
     }
 }
 

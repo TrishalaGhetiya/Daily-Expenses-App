@@ -25,6 +25,7 @@ exports.getAddedExpenses = async (req, res, next) => {
     }
     catch(err){
         console.log(err);
+        res.status(500).json({message: 'Something went wrong', success: false});
     }
 }
 
@@ -51,11 +52,12 @@ exports.postAddExpenses = async (req, res, next) => {
 
         await t.commit();
         console.log('expense added');
-        res.json(result);
+        res.status(200).json(result);
     }
     catch(err){
         await t.rollback();
         console.log(err);
+        res.status(500).json({message: 'Something went wrong', success: false});
     }
 }
 
@@ -80,6 +82,7 @@ exports.deleteExpense = async (req, res, next) => {
     catch(err){
         await t.rollback();
         console.log(err);
+        res.status(500).json({message: 'Something went wrong', success: false});
     }
 }
 
@@ -95,6 +98,7 @@ exports.downloadExpenses = async (req, res, next) => {
     }
     catch(err){
         console.log(err);
+        res.status(500).json({message: 'Something went wrong', success: false});
     }
 }
 
@@ -130,5 +134,6 @@ async function uploadToS3(data, filename){
     }
     catch(err){
         console.log(err);
+        res.status(500).json({message: 'Something went wrong', success: false});
     }
 }

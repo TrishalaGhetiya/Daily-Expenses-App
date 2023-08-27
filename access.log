@@ -1,0 +1,4 @@
+::1 - - [27/Aug/2023:18:02:35 +0000] "OPTIONS /get-expenses/?page=1&limit=2 HTTP/1.1" 204 0 "-" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36"
+::1 - - [27/Aug/2023:18:02:35 +0000] "GET /get-expenses/?page=1&limit=2 HTTP/1.1" 304 - "-" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36"
+::1 - - [27/Aug/2023:18:02:52 +0000] "OPTIONS /get-expenses/?page=2&limit=2 HTTP/1.1" 204 0 "-" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36"
+::1 - - [27/Aug/2023:18:02:52 +0000] "GET /get-expenses/?page=2&limit=2 HTTP/1.1" 304 - "-" "Mozilla/5.0 (Linux; Android 6.0; Nexus 5 Build/MRA58N) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/116.0.0.0 Mobile Safari/537.36"

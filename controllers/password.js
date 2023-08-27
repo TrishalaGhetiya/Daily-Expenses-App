@@ -47,6 +47,7 @@ exports.forgotPassword = async (req, res, next) => {
     catch(err){
         console.log('something went wrong');
         console.log(err);
+        res.status(500).json({message: 'Something went wrong', success: false});
     }
 }
 
@@ -107,6 +108,7 @@ exports.resetPassword = async (req, res, next) => {
     }
     catch(err){
         console.log(err);
+        res.status(500).json({message: 'Something went wrong', success: false});
     }
 }
 
@@ -125,6 +127,7 @@ exports.updatePassword = async (req, res, next) => {
     }
     catch(err){
         console.log(err);
+        res.status(500).json({message: 'Something went wrong', success: false});
     }
 }
 

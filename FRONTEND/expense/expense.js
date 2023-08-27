@@ -77,7 +77,6 @@ window.addEventListener('DOMContentLoaded', async() => {
         }
         var page = 1;
         const res = await axios.get(`http://localhost:3000/get-expenses/?page=${page}&limit=${limit}`, {headers: {'Authorization': token}});
-        expenseList.innerHTML = '';
         showPagination(res.data.count);
         for(let i=0;i<res.data.rows.length;i++)
         {

@@ -11,7 +11,7 @@ exports.purchasePremium = async (req, res, next) => {
         const amount = 2500;
         const rzpOrder = await rzp.orders.create({amount, "currency": "INR"})
         const userOrder = await req.user.createOrder({orderid: rzpOrder.id, status: 'Pending'})
-        console.log('done good');
+        console.log('Premium purchased');
         return res.status(201).json({rzpOrder, key_id : rzp.key_id});
     }
     catch(err){
@@ -30,5 +30,6 @@ exports.updateTransactionStatus = async(req, res) => {
     }
     catch(err){
         console.log(err);
+        res.status(500).json({message: 'Something went wrong', success: false});
     }
 }
