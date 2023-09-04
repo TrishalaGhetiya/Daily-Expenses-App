@@ -1,7 +1,7 @@
 const User = require('../models/user');
 const Sib = require('sib-api-v3-sdk');
 require('dotenv').config()
-const FPR = require('../models/forgotPasswordRequests');
+const FPR = require('../models/forgot-password-requests');
 const { v4: uuidv4 } = require('uuid');
 const path = require('path');
 const bcrypt = require('bcrypt');

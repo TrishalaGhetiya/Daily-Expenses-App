@@ -62,7 +62,7 @@ function parseJwt (token) {
 
 function showPremiumMessage(){
     premium.style.visibility="hidden";
-    premiumStatus.innerHTML = 'You are a Premium member now.';
+    premiumStatus.innerHTML = 'Premium member';
     leaderBoard.style.visibility = "visible";
     report.style.visibility = "visible";
 
@@ -122,9 +122,9 @@ function showNewExpenseOnScreen(data){
     deleteBtn.className='btn btn-sm btn-danger delete float-right';
     deleteBtn.appendChild(document.createTextNode('X'));
 
-    const editButton = document.createElement('button');
-    editButton.className= 'btn btn-sm btn-success float-right edit';
-    editButton.appendChild(document.createTextNode('Edit'));
+    // const editButton = document.createElement('button');
+    // editButton.className= 'btn btn-sm btn-success float-right edit';
+    // editButton.appendChild(document.createTextNode('Edit'));
 
     const li = document.createElement('li');
     li.className = 'name';
@@ -134,7 +134,7 @@ function showNewExpenseOnScreen(data){
     li.appendChild(document.createTextNode(' - '));
     li.appendChild(document.createTextNode(`${data.category}`));
     li.appendChild(deleteBtn);
-    li.appendChild(editButton);
+    //li.appendChild(editButton);
 
     totalExpense.innerHTML=`${data.user.total_Expense}`;
 

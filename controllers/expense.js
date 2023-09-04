@@ -1,6 +1,6 @@
 const Expense = require('../models/expense');
 const User = require('../models/user');
-const sequelize = require('../util/database');
+const sequelize = require('../utils/database');
 const AWS = require('aws-sdk');
 require('dotenv').config();
 

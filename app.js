@@ -7,11 +7,11 @@ const helmet = require('helmet');
 require('dotenv').config();
 const morgan = require('morgan');
 
-const sequelize = require('./util/database');
+const sequelize = require('./utils/database');
 const User = require('./models/user');
 const Expense = require('./models/expense');
 const Order = require('./models/order');
-const FPR = require('./models/forgotPasswordRequests');
+const FPR = require('./models/forgot-password-requests');
 
 const app = express();
 
@@ -38,7 +38,7 @@ app.use(purchaseRoutes);
 app.use(passwordRoutes);
 app.use(errorController.get404);
 
-Expense.belongsTo(User, {constraints: true, onDelete: 'CASCADE'});
+Expense.belongsTo(User);
 User.hasMany(Expense);
 
 User.hasMany(Order);

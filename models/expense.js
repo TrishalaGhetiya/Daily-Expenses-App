@@ -1,5 +1,5 @@
 const Sequelize = require('sequelize');
-const sequelize = require('../util/database');
+const sequelize = require('../utils/database');
 
 //Create Table named expenses in database
 const Expense = sequelize.define('expenses', {

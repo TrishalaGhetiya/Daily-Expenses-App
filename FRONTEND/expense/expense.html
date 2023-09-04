@@ -5,17 +5,55 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+    <style>
+      .form-white.input-group>.form-control:focus {
+      border-color: #fff;
+      box-shadow: inset 0 0 0 1px #fff;
+    }
     
+    .navbar-dark .navbar-nav .nav-link {
+      color: #fff;
+    }
+    
+    .navbar-dark .navbar-nav .nav-link:hover,
+    .navbar-dark .navbar-nav .nav-link:focus {
+      color: rgba(255, 255, 255, 0.75);
+    }
+    </style>
+    
+
     <title>Expenses</title>
 </head>
 <body>
     <section class="vh-100" style="background-color: #733aa8;">
         <div class="container py-5 h-100">
-          <div id="premiumStatus"></div>
-          <button id="premium" class="btn-primary">Buy Premium</button>
+          <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #49246b;">
+            <div class="container-fluid">
+              <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                  <li class="nav-link" id="premiumStatus">
+                    
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="leaderBoard" style="visibility: hidden;" href="#">Show LeaderBoard</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="report" style="visibility: hidden;" href="#">Download Report</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="premium" href="#">Buy Premium</a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link" id="logout" href="#">Log Out</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </nav>
+          <!-- <div id="premiumStatus"></div> -->
+          <!-- <button id="premium" class="btn-primary">Buy Premium</button>
           <button id="leaderBoard" class="btn-primary" style="visibility: hidden;">Show LeaderBoard</button>
-          <button id="report" class="btn-primary" style="visibility: hidden;">DownLoad Report</button>
-          <button id="logout">Log Out</button>
+          <button id="report" class="btn-primary" style="visibility: hidden;">DownLoad Report</button> -->
           <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
           <div class="row d-flex justify-content-center align-items-center h-100">
             <div class="col-12 col-md-8 col-lg-6 col-xl-5">
