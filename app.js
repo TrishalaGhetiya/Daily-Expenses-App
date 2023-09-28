@@ -6,12 +6,13 @@ const bodyParser = require('body-parser');
 const helmet = require('helmet');
 require('dotenv').config();
 const morgan = require('morgan');
+const mongoose = require('mongoose');
 
-const sequelize = require('./utils/database');
-const User = require('./models/user');
-const Expense = require('./models/expense');
-const Order = require('./models/order');
-const FPR = require('./models/forgot-password-requests');
+// const sequelize = require('./utils/database');
+// const User = require('./models/user');
+// const Expense = require('./models/expense');
+// const Order = require('./models/order');
+// const FPR = require('./models/forgot-password-requests');
 
 const app = express();
 
@@ -31,26 +32,32 @@ const purchaseRoutes = require('./routes/purchase');
 const premiumRoutes = require('./routes/premium');
 const passwordRoutes = require('./routes/password');
 
-app.use(premiumRoutes);
+// app.use(premiumRoutes);
 app.use(expenseRoutes);
 app.use(userRoutes);
-app.use(purchaseRoutes);
-app.use(passwordRoutes);
+// app.use(purchaseRoutes);
+// app.use(passwordRoutes);
 app.use(errorController.get404);
 
-Expense.belongsTo(User);
-User.hasMany(Expense);
+// Expense.belongsTo(User);
+// User.hasMany(Expense);
 
-User.hasMany(Order);
-Order.belongsTo(User);
+// User.hasMany(Order);
+// Order.belongsTo(User);
 
-FPR.belongsTo(User);
-User.hasMany(FPR);
+// FPR.belongsTo(User);
+// User.hasMany(FPR);
 
+mongoose
+  .connect(process.env.MONGO_URL)
+  .then(() => {
+    console.log('database connected');
+    app.listen(3000);
+  })
 
-sequelize
-    .sync()
-    .then(result => {
-        app.listen(process.env.PORT || 3000);
-    })
-    .catch(err => console.log(err));
+// sequelize
+//     .sync()
+//     .then(result => {
+//         app.listen(process.env.PORT || 3000);
+//     })
+//     .catch(err => console.log(err));

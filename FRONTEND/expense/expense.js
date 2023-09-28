@@ -77,11 +77,12 @@ window.addEventListener('DOMContentLoaded', async() => {
         }
         var page = 1;
         const res = await axios.get(`http://localhost:3000/get-expenses/?page=${page}&limit=${limit}`, {headers: {'Authorization': token}});
+        console.log(res);
         showPagination(res.data.count);
-        for(let i=0;i<res.data.rows.length;i++)
+        for(let i=0;i<res.data.expenses.length;i++)
         {
-            showNewExpenseOnScreen(res.data.rows[i]);
-            expenseData.push(res.data.rows[i]);
+            showNewExpenseOnScreen(res.data.expenses[i]);
+            expenseData.push(res.data.expenses[i]);
         }
     }
     catch(err){
@@ -104,11 +105,12 @@ async function getExpenses(currentPage){
     try{
         const token = localStorage.getItem('token');
         const res = await axios.get(`http://localhost:3000/get-expenses/?page=${currentPage}&limit=${limit}`, {headers: {'Authorization': token}});
+        //console.log(res);
         expenseList.innerHTML = '';
-        for(let i=0;i<res.data.rows.length;i++)
+        for(let i=0;i<res.data.expenses.length;i++)
         {
-            showNewExpenseOnScreen(res.data.rows[i]);
-            expenseData.push(res.data.rows[i]);
+            showNewExpenseOnScreen(res.data.expenses[i]);
+            expenseData.push(res.data.expenses[i]);
         }
     }
     catch(err){
@@ -136,7 +138,7 @@ function showNewExpenseOnScreen(data){
     li.appendChild(deleteBtn);
     //li.appendChild(editButton);
 
-    totalExpense.innerHTML=`${data.user.total_Expense}`;
+    //totalExpense.innerHTML=`${data.user.total_Expense}`;
 
     expenseList.appendChild(li);
 }
@@ -176,7 +178,7 @@ async function addExpense(e){
         try{
             const token = localStorage.getItem('token');
             const res = axios.post('http://localhost:3000/add-expenses', expenses, {headers: {'Authorization': token}});
-            location.reload();
+            //location.reload();
             console.log('Expense added');
 
             amount.value='';

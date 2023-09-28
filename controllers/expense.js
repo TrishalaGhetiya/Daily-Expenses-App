@@ -1,6 +1,6 @@
 const Expense = require('../models/expense');
 const User = require('../models/user');
-const sequelize = require('../utils/database');
+// const sequelize = require('../utils/database');
 const AWS = require('aws-sdk');
 require('dotenv').config();
 
@@ -10,18 +10,25 @@ exports.getAddedExpenses = async (req, res, next) => {
         const pageNumber = +req.query.page || 1;
         const limit = +req.query.limit;
 
-        const {count, rows} = await Expense.findAndCountAll({ 
-            where: {userId: req.user.id },
-            attributes: ['id', 'amount', 'description', 'category'],
-            include: [{
-                model: User,
-                attributes: ['total_Expense']
-            }],
-            offset: (pageNumber - 1) * limit,
-            limit: limit
-        });
+        const expenses = await Expense.find({userId: req.user._id})
+            .limit(limit * 1)
+            .skip((pageNumber -1) * limit)
+            .exec()
+            
+        const count = await Expense.count();
+
+        // const {count, rows} = await Expense.findAndCountAll({ 
+        //     where: {userId: req.user.id },
+        //     attributes: ['id', 'amount', 'description', 'category'],
+        //     include: [{
+        //         model: User,
+        //         attributes: ['total_Expense']
+        //     }],
+        //     offset: (pageNumber - 1) * limit,
+        //     limit: limit
+        // });
         console.log('expenses send');
-        res.status(200).json({count, rows});
+        res.status(200).json({count, expenses});
     }
     catch(err){
         console.log(err);
@@ -31,31 +38,35 @@ exports.getAddedExpenses = async (req, res, next) => {
 
 //Add expenses to the database
 exports.postAddExpenses = async (req, res, next) => {
-    const t = await sequelize.transaction();
     try{
         const amount = req.body.amount;
         const description = req.body.description;
         const category = req.body.category;
-        const userId = req.user.id;
+        const userId = req.user._id;
         const updatedAmount = req.user.total_Expense + +amount;
 
-        const expense = await Expense.create({
+        const expense = new Expense({
             amount: amount,
             description: description,
             category: category,
             userId: userId
-        }, { transaction: t })
+        })
 
-        const result = await req.user.update({
-            total_Expense: updatedAmount
-        }, { transaction: t })
+        await expense.save();
 
-        await t.commit();
+        await User.findOneAndUpdate(
+            {_id: req.user._id}, 
+            {total_Expense: updatedAmount}
+        )
+
+        // const result = await req.user.update({
+        //     total_Expense: updatedAmount
+        // }, { transaction: t })
+
         console.log('expense added');
-        res.status(200).json(result);
+        res.status(200).json({message: 'Successful'});
     }
     catch(err){
-        await t.rollback();
         console.log(err);
         res.status(500).json({message: 'Something went wrong', success: false});
     }

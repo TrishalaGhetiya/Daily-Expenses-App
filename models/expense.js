@@ -1,23 +1,49 @@
-const Sequelize = require('sequelize');
-const sequelize = require('../utils/database');
+const mongoose = require('mongoose');
 
-//Create Table named expenses in database
-const Expense = sequelize.define('expenses', {
-    id: {
-        type: Sequelize.INTEGER,
-        autoIncrement: true,
-        allowNull: false,
-        primaryKey: true
-      },
-      amount:{
-        type: Sequelize.FLOAT 
-      },
-      description:{
-        type: Sequelize.STRING 
-      },
-      category:{
-        type: Sequelize.STRING,
-      }
-});
+const Schema = mongoose.Schema;
 
-module.exports = Expense;
+const expenseSchema = new Schema({
+  amount:{
+      type: Number,
+      required: true 
+  },
+  description:{
+    type: String,
+    required: true
+  },
+  category:{
+    type: String,
+    required: true
+  },
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
+})
+
+module.exports = mongoose.model('Expense', expenseSchema);
+
+// const Sequelize = require('sequelize');
+// const sequelize = require('../utils/database');
+
+// //Create Table named expenses in database
+// const Expense = sequelize.define('expenses', {
+//     id: {
+//         type: Sequelize.INTEGER,
+//         autoIncrement: true,
+//         allowNull: false,
+//         primaryKey: true
+//       },
+//       amount:{
+//         type: Sequelize.FLOAT 
+//       },
+//       description:{
+//         type: Sequelize.STRING 
+//       },
+//       category:{
+//         type: Sequelize.STRING,
+//       }
+// });
+
+// module.exports = Expense;

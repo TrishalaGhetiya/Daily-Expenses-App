@@ -20,7 +20,7 @@ exports.postSignUpUser = async (req, res, next) => {
                 throw new Error(err);
             }
             else{
-                await User.create({
+                const user = new User({
                     firstName: firstName,
                     lastName: lastName,
                     email: email,
@@ -28,6 +28,7 @@ exports.postSignUpUser = async (req, res, next) => {
                     isPremium: false,
                     total_Expense: 0
                 })
+                user.save();
                 console.log('User added');
                 return res.status(200).json({message: 'successfully created new user'});
                 
@@ -43,7 +44,7 @@ exports.postSignUpUser = async (req, res, next) => {
 //Login User
 exports.postLoginUser = async (req, res, next) => {
     try{
-        const user = await User.findOne({ where: { email: req.body.email } });
+        const user = await User.findOne({ email: req.body.email });
         if(user!=null){
             bcrypt.compare(req.body.pass, user.password, async (err, result) => {
                 if(err){
