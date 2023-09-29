@@ -1,6 +1,5 @@
 const Expense = require('../models/expense');
 const User = require('../models/user');
-// const sequelize = require('../utils/database');
 const AWS = require('aws-sdk');
 require('dotenv').config();
 
@@ -11,23 +10,15 @@ exports.getAddedExpenses = async (req, res, next) => {
         const limit = +req.query.limit;
 
         const expenses = await Expense.find({userId: req.user._id})
+            .populate('userId')
             .limit(limit * 1)
             .skip((pageNumber -1) * limit)
             .exec()
-            
-        const count = await Expense.count();
 
-        // const {count, rows} = await Expense.findAndCountAll({ 
-        //     where: {userId: req.user.id },
-        //     attributes: ['id', 'amount', 'description', 'category'],
-        //     include: [{
-        //         model: User,
-        //         attributes: ['total_Expense']
-        //     }],
-        //     offset: (pageNumber - 1) * limit,
-        //     limit: limit
-        // });
-        console.log('expenses send');
+        const count = await Expense.count(
+            {userId: req.user._id}
+        );
+        //console.log('expenses send');
         res.status(200).json({count, expenses});
     }
     catch(err){
@@ -59,10 +50,6 @@ exports.postAddExpenses = async (req, res, next) => {
             {total_Expense: updatedAmount}
         )
 
-        // const result = await req.user.update({
-        //     total_Expense: updatedAmount
-        // }, { transaction: t })
-
         console.log('expense added');
         res.status(200).json({message: 'Successful'});
     }
@@ -74,24 +61,20 @@ exports.postAddExpenses = async (req, res, next) => {
 
 //delete expense
 exports.deleteExpense = async (req, res, next) => {
-    const t = await sequelize.transaction();
     try{
         const expenseId = req.params.id;
         const updatedAmount = req.user.total_Expense - req.body.amount;
 
-        const expense = await Expense.findByPk(expenseId);
-       
-        const updatedUser = await User.update({total_Expense: updatedAmount}, { where: {id: expense.userId}}, {transaction: t})
+        const expense = await Expense.findById(expenseId);
 
-        const deletedExpense = await expense.destroy({ transaction: t });
+        const updatedUser = await User.findOneAndUpdate({_id: expense.userId}, {total_Expense: updatedAmount});
 
-        await t.commit();
+        await Expense.findByIdAndRemove(expenseId);
 
         console.log('expense deleted');
         res.status(200).json({message: 'expense deleted successfully'});
     }
     catch(err){
-        await t.rollback();
         console.log(err);
         res.status(500).json({message: 'Something went wrong', success: false});
     }
@@ -100,7 +83,7 @@ exports.deleteExpense = async (req, res, next) => {
 //download expenses
 exports.downloadExpenses = async (req, res, next) => {
     try{
-        const expenses = await req.user.getExpenses();
+        const expenses = await Expense.find({userId: req.user._id})
         const stringifiedExpenses = JSON.stringify(expenses);
         const filename = `Expense${req.user.id}/${new Date()}.txt`;
         const fileURL = await uploadToS3(stringifiedExpenses, filename);

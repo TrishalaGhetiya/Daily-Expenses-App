@@ -138,7 +138,7 @@ function showNewExpenseOnScreen(data){
     li.appendChild(deleteBtn);
     //li.appendChild(editButton);
 
-    //totalExpense.innerHTML=`${data.user.total_Expense}`;
+    totalExpense.innerHTML=`${data.userId.total_Expense}`;
 
     expenseList.appendChild(li);
 }
@@ -156,9 +156,9 @@ async function addExpense(e){
         deleteBtn.className='btn btn-sm btn-danger delete float-right';
         deleteBtn.appendChild(document.createTextNode('X'));
 
-        const editButton = document.createElement('button');
-        editButton.className= 'btn btn-sm btn-success float-right edit';
-        editButton.appendChild(document.createTextNode('Edit'));
+        // const editButton = document.createElement('button');
+        // editButton.className= 'btn btn-sm btn-success float-right edit';
+        // editButton.appendChild(document.createTextNode('Edit'));
 
         const li = document.createElement('li');
         li.appendChild(document.createTextNode(`${description.value}`));
@@ -167,7 +167,7 @@ async function addExpense(e){
         li.appendChild(document.createTextNode(' - '));
         li.appendChild(document.createTextNode(`${category.value}`));
         li.appendChild(deleteBtn);
-        li.appendChild(editButton);
+        //li.appendChild(editButton);
 
         expenseList.appendChild(li);
         let expenses = {
@@ -178,7 +178,7 @@ async function addExpense(e){
         try{
             const token = localStorage.getItem('token');
             const res = axios.post('http://localhost:3000/add-expenses', expenses, {headers: {'Authorization': token}});
-            //location.reload();
+            location.reload();
             console.log('Expense added');
 
             amount.value='';
@@ -207,11 +207,11 @@ async function updateExpense(e){
                     {
                         try{
                             const token = localStorage.getItem('token');
-                            const res = await axios.delete(`http://localhost:3000/delete-expense/${expenseData[i].id}`,
+                            const res = await axios.delete(`http://localhost:3000/delete-expense/${expenseData[i]._id}`,
                             {headers: {'Authorization': token}, 
                             data: {
                                 'amount': expenseData[i].amount, 
-                                'total_Expense' : expenseData[i].user.total_Expense
+                                'total_Expense' : expenseData[i].userId.total_Expense
                             }
                         });
                         console.log(res);

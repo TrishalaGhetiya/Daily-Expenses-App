@@ -2,10 +2,11 @@ const User = require('../models/user');
 
 exports.getLeaderBoard = async (req, res, next) => {
     try{
-        const leaderBoardDetails = await User.findAll({
-            attributes: ['firstName', 'total_Expense'],
-            order: [['total_Expense', 'DESC']]
-        })
+        const leaderBoardDetails = await User.find(
+            // attributes: ['firstName', 'total_Expense'],
+            // order: [['total_Expense', 'DESC']]
+        ).select("firstName total_Expense")
+        .sort({total_Expense: 'desc'})
         res.status(200).json(leaderBoardDetails);
     }
     catch(err){
