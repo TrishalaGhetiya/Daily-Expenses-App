@@ -77,7 +77,6 @@ window.addEventListener('DOMContentLoaded', async() => {
         }
         var page = 1;
         const res = await axios.get(`http://localhost:3000/get-expenses/?page=${page}&limit=${limit}`, {headers: {'Authorization': token}});
-        console.log(res);
         showPagination(res.data.count);
         for(let i=0;i<res.data.expenses.length;i++)
         {
