@@ -67,11 +67,14 @@ exports.deleteExpense = async (req, res, next) => {
 
         const expense = await Expense.findById(expenseId);
 
-        const updatedUser = await User.findOneAndUpdate({_id: expense.userId}, {total_Expense: updatedAmount});
+        const updatedUser = await User.findOneAndUpdate(
+            {_id: expense.userId}, 
+            {total_Expense: updatedAmount}
+        );
 
         await Expense.findByIdAndRemove(expenseId);
 
-        console.log('expense deleted');
+        //console.log('expense deleted');
         res.status(200).json({message: 'expense deleted successfully'});
     }
     catch(err){

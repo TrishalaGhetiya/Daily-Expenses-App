@@ -3,6 +3,10 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const fprSchema = new Schema({
+  fprId : {
+    type: String,
+    required: true
+  },
   isActive: {
     type: Boolean,
     required: true
@@ -15,19 +19,3 @@ const fprSchema = new Schema({
 })
 
 module.exports = mongoose.model('FPR', fprSchema);
-// const Sequelize = require('sequelize');
-// const sequelize = require('../utils/database');
-// const { v4: uuidv4 } = require('uuid');
-// uuidv4();
-
-// //Create Table named forgotPasswordRequests in database
-// const FPR = sequelize.define('forgotPasswordRequests', {
-//     id: {
-//         type: Sequelize.STRING,
-//         allowNull: false,
-//         primaryKey: true
-//       },
-//       isActive: Sequelize.BOOLEAN
-// });
-
-// module.exports = FPR;
